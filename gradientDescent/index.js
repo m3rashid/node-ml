@@ -36,6 +36,26 @@ const adjustParams = (m, c) => {
 	}
 }
 
+const performanceR2 = (m, c) => {
+	let sRes = 0, sTot = 0
+	const yMean = initialData.reduce((acc, curr) => acc + curr.y, 0) / initialData.length;
+
+	initialData.forEach((data) => {
+		sRes += Math.pow((y(m, data.x, c) - data.y), 2);
+		sTot = Math.pow((data.y - yMean), 2);
+	})
+
+	return 1 - (sRes / sTot);
+}
+
+const performanceR2Adjusted = (m, c) => {
+	const r2 = performanceR2(m, c)
+	const n = initialData.length;
+	const p = 1; // number of parameters
+
+	return 1 - ((1 - r2) * (n - 1) / (n - p - 1))
+}
+
 const main = () => {
 	let m = 1, c = 0;
 	let prevCost = 0;
@@ -52,6 +72,11 @@ const main = () => {
 		}
 		prevCost = currCost;
 	}
+	const r2 = performanceR2(m, c) * 100;
+	const adjustedR2 = performanceR2Adjusted(m, c) * 100;
+
+	console.log(`\nR2: ${r2.toFixed(3)}%`)
+	console.log(`Adjusted R2: ${adjustedR2.toFixed(3)}%`)
 	console.log(`\ny = ${m.toFixed(3)}x + ${c.toFixed(3)}`)
 }
 

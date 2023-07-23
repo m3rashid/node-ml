@@ -26,6 +26,29 @@ func toFixed3(f float64, unit ...float64) float64 {
 	return math.Trunc(f/newUnit) * newUnit
 }
 
+func performanceR2(m, c float64, data []DataPoint) float64 {
+	sRes, sTot := 0.0, 0.0
+	yMean := 0.0
+
+	for _, point := range data {
+		yMean += point.y
+	}
+	yMean /= float64(len(data))
+
+	for _, point := range data {
+		sRes += math.Pow(y(m, point.x, c)-point.y, 2.0)
+		sTot += math.Pow(point.y-yMean, 2.0)
+	}
+
+	return 1 - (sRes / sTot)
+}
+
+func performanceR2Adjusted(m, c float64, data []DataPoint) float64 {
+	r2 := performanceR2(m, c, data)
+	dataLength := float64(len(data))
+	return 1 - ((1 - r2) * (dataLength - 1) / (dataLength - 2))
+}
+
 func cost(m, c float64, data []DataPoint) float64 {
 	sum := 0.0
 	for _, point := range data {
@@ -70,5 +93,11 @@ func main() {
 		}
 		prevCost = currCost
 	}
+
+	r2 := performanceR2(m, c, initialData) * 100
+	r2Adjusted := performanceR2Adjusted(m, c, initialData) * 100
+
+	fmt.Printf("\nR2 = %.3f%%", toFixed3(r2))
+	fmt.Printf("\nR2 Adjusted = %.3f%%\n", toFixed3(r2Adjusted))
 	fmt.Printf("\ny = %.3fx + %.3f\n", m, c)
 }
