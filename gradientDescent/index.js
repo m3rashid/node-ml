@@ -64,6 +64,10 @@ const main = () => {
 	for (let i = 0; i < iterations; i++) {
 		const { newM, newC } = adjustParams(m, c);
 		currCost = cost(m, c);
+		if (currCost > prevCost) {
+			console.log(`\nCost increased from ${prevCost.toFixed(3)} to ${currCost.toFixed(3)} at iteration ${i + 1}`)
+			break;
+		}
 
 		m = newM;
 		c = newC;

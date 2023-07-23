@@ -85,6 +85,11 @@ func main() {
 	for i := 0; i < iterations; i++ {
 		newM, newC := adjustParams(m, c, initialData)
 		currCost = cost(m, c, initialData)
+		if currCost > prevCost {
+			fmt.Printf("Cost increased from %.3f to %.3f\n", prevCost, currCost)
+			break
+		}
+
 		m = newM
 		c = newC
 
