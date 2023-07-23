@@ -1,12 +1,10 @@
 {
-  "name": "node-ml",
+  "name": "ml-algos",
   "version": "1.0.0",
   "description": "",
+  "author": "m3rashid",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "m3rashid",
-  "license": "MIT"
+  }
 }
