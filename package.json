@@ -5,7 +5,9 @@
   "author": "m3rashid",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pnpm rollup -c",
+    "dev": "pnpm rollup -c -w",
+    "start": "node ./dist/index.js"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.4",
